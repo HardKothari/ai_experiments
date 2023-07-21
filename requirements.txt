@@ -1,0 +1,3 @@
+langchain[llms]==0.0.238
+huggingface_hub==0.16.4
+python-dotenv==1.0.0
