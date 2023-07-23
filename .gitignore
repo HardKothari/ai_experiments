@@ -63,3 +63,5 @@ include/
 share/
 .env
 pyvenv.cfg
+tutorials/hf_hub-test.py
+tutorials/llam2-test.py

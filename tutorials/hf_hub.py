@@ -8,16 +8,20 @@ load_dotenv()
 
 # This script generates answers to the questions asked using generative AI models hosted on Hugging Face Hub.
 
-
-class QuestionAnswerGenerator:
-    def __init__(self):
-        self.repo_id = [
+models = [  
             "google/flan-t5-xxl",
             "salesforce/codegen25-7b-multi",
-            "Open-Orca/OpenOrca-Preview1-13B"
+            "Open-Orca/OpenOrca-Preview1-13B",
+            "stabilityai/FreeWilly2",
+            "ai-forever/ruGPT-3.5-13B",
+            "upstage/llama-30b-instruct-2048"
         ]
+
+class QuestionAnswerGenerator:
+    def __init__(self, model="google/flan-t5-xxl"):
+        self.repo_id = model
         self.llm = HuggingFaceHub(
-            repo_id=self.repo_id[0],
+            repo_id=self.repo_id,
             model_kwargs={
                 "temperature": 0.5,
                 "max_length": 264
@@ -60,5 +64,5 @@ class QuestionAnswerGenerator:
 
 
 if __name__ == "__main__":
-    qag = QuestionAnswerGenerator()
+    qag = QuestionAnswerGenerator(model=models[0])
     qag.main()
