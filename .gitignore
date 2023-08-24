@@ -65,3 +65,8 @@ share/
 pyvenv.cfg
 tutorials/hf_hub-test.py
 tutorials/llam2-test.py
+tutorials/gradio.py
+tutorials/langchian-cookbook-expression.py
+tutorials/langchain-cookbook-langsmith.py
+tutorials/output.json
+etc/jupyter/nbconfig/notebook.d/pydeck.json
