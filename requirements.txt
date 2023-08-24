@@ -2,3 +2,6 @@ langchain[llms]==0.0.238
 huggingface_hub==0.16.4
 python-dotenv==1.0.0
 llama-cpp-python==0.1.74
+youtube-transcript-api==0.6.1
+openai==0.27.8
+tiktoken==0.4.0
