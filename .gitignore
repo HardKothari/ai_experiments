@@ -70,3 +70,4 @@ tutorials/langchian-cookbook-expression.py
 tutorials/langchain-cookbook-langsmith.py
 tutorials/output.json
 etc/jupyter/nbconfig/notebook.d/pydeck.json
+streamlit_apps/st_functions.py

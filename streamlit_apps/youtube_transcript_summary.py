@@ -5,6 +5,36 @@ from langchain.chat_models import ChatOpenAI
 from langchain.text_splitter import TokenTextSplitter
 from langchain import PromptTemplate
 
+def process_transcript(openai_api_key, youtube_url, summary_type):
+    # Load Transcript
+    loader = YoutubeLoader.from_youtube_url(youtube_url, language=["en", "en-US"])
+    transcript = loader.load()
+
+    # Split Transcript
+    splitter = TokenTextSplitter(model_name="gpt-3.5-turbo-16k", chunk_size=10000, chunk_overlap=100)
+    chunks = splitter.split_documents(transcript)
+
+    # Set up LLM
+    llm = ChatOpenAI(openai_api_key=openai_api_key, model="gpt-3.5-turbo-16k", temperature=0.3)
+
+    prompt_template = f"""
+    Write a {summary_type} summary of the following text.        
+    Add bullet points and pragrpaphs wherever needed. 
+    Add bold texts and headers wherever needed.
+
+    TEXT: "{{text}}"
+
+    {summary_type} SUMMARY:"""
+
+    PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
+
+    # Summarize
+    summarize_chain = load_summarize_chain(llm=llm, chain_type="refine", verbose=True, question_prompt=PROMPT)
+    summary = summarize_chain.run(chunks)
+
+    return summary
+
+
 def main():
     st.title("YouTube Transcript Summarizer")
     
@@ -24,41 +54,15 @@ def main():
     
     # Submit Button
     if st.button("Submit"):
-        # Load Transcript
-        loader = YoutubeLoader.from_youtube_url(youtube_url, language=["en", "en-US"])
-        transcript = loader.load()
+        summary = process_transcript(openai_api_key, youtube_url, summary_type)
         
-        # Split Transcript
-        splitter = TokenTextSplitter(model_name="gpt-3.5-turbo-16k", chunk_size=10000, chunk_overlap=100)
-        chunks = splitter.split_documents(transcript)
-        
-        # Set up LLM
-        llm = ChatOpenAI(openai_api_key=openai_api_key, model="gpt-3.5-turbo-16k", temperature=0.3)
-        
+        if summary:
+            # Display summary
+            st.subheader("Summary")
+            st.write(summary)
 
-        prompt_template = f"""
-Write a {summary_type} summary of the following text.        
-Add bullet points and pragrpaphs wherever needed. 
-Add bold texts and headers wherever needed.
-
-TEXT: "{{text}}"
-
-{summary_type} SUMMARY:"""
-        
-        PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
-
-        # Summarize
-        summarize_chain = load_summarize_chain(llm=llm, chain_type="refine", verbose=True, question_prompt=PROMPT)
-        summary = summarize_chain.run(chunks)
-        
-        # Display summary
-        st.subheader("Summary")
-        st.write(summary)
-        
         # Clear API Key
         openai_api_key = ""
     
 if __name__ == "__main__":
     main()
-
-
