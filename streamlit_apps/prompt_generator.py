@@ -68,9 +68,10 @@ def main():
                     st.subheader("Prompt:")
                     st.write(prompt)
                 with col2:
-                    st.subheader("Answer:")
-                    st.write(answer)
-                 # Clear API Key
+                    if gpt_answer:
+                        st.subheader("Answer:")
+                        st.write(answer)
+                # Clear API Key
                 openai_api_key = ""
     else:
         st.warning("Please populate both the OpenAI API Key and the Lazy Prompt.")
