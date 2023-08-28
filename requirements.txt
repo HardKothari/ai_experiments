@@ -1,4 +1,4 @@
-langchain[llms]==0.0.238
+langchain[llms]==0.0.273
 huggingface_hub==0.16.4
 python-dotenv==1.0.0
 llama-cpp-python==0.1.74
