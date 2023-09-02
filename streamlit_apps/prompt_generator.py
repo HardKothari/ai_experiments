@@ -20,7 +20,6 @@ def main_expression(openai_api_key, text, instructions, gpt_answer, prompt_key):
     else:
         special_instructions = ""
 
-    # prompt1=PROMPTS["generate_plan_prompt"]  
     prompt1=PROMPTS[prompt_key]      
     
     chain1 = prompt1 | model | StrOutputParser()
@@ -36,7 +35,7 @@ def main_expression(openai_api_key, text, instructions, gpt_answer, prompt_key):
         answer = chain2.invoke({"instructions": special_instructions})
     else:
         answer = ""    
-    # print(f"GPT Answer:\n{answer}")
+    
     return prompt_1, answer
    
 
