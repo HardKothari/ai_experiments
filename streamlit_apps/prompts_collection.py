@@ -103,3 +103,32 @@ SUMMARY: """
     prompt = ChatPromptTemplate.from_template(template=prompt_text)
 
     return prompt
+
+
+def unit_tests_generator():
+
+    prompt_text = f"""
+Create comprehensive unit tests for the provided Python code block to verify that it functions correctly under various scenarios. 
+
+Ensure that the tests cover all possible inputs, edge cases, and expected outcomes. 
+
+Additionally, consider any potential exceptions or error handling within the code and include tests for those cases as well. 
+
+Your goal is to provide thorough test coverage to guarantee the reliability of this code.
+
+Only answer me with the code and nothing else.
+
+Here's an example of a answer,
+
+Example answer: 
+import unittest
+from sample_module import Calculator, square, greet...
+
+Code: ``` {{text}} ```
+
+ANSWER: 
+"""
+
+    prompt = ChatPromptTemplate.from_template(template=prompt_text)
+
+    return prompt

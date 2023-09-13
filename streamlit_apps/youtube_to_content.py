@@ -70,7 +70,6 @@ def main():
                 if newsletter:
                     newsletter_answer = generate_content(openai_api_key=openai_api_key, text=transcript, content="Newsletter")
 
-            print(f"Summary: {summary_answer}")
             col1, col2 = st.columns(2)
             with col1:
                 if summary_answer:
