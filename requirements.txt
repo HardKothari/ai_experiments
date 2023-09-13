@@ -5,4 +5,4 @@ llama-cpp-python==0.1.74
 youtube-transcript-api==0.6.1
 openai==0.27.8
 tiktoken==0.4.0
-bs4==4.12.2
+bs4
