@@ -72,7 +72,7 @@ def main():
 
             col1, col2 = st.columns(2)
             with col1:
-                if summary_answer:
+                if summary:
                     st.subheader("Summary:")
                     st.write(summary_answer)
             with col2:
