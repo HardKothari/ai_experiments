@@ -105,22 +105,26 @@ SUMMARY: """
     return prompt
 
 
-def unit_tests_generator():
+def unit_tests_generator(language):
 
     prompt_text = f"""
-Create comprehensive unit tests for the provided {{language}} code block to verify that it functions correctly under various scenarios. 
+Create comprehensive unit tests for the provided code block, ensuring that it functions correctly under various scenarios. 
 
-Ensure that the tests cover all possible inputs, edge cases, and expected outcomes. 
+{f'Language of the code block is {language}' if f'{language}' != "" else 'Please identify the appropriate language of the code block' }
 
-Additionally, consider any potential exceptions or error handling within the code and include tests for those cases as well. 
+Make sure the tests cover all possible inputs, edge cases, and expected outcomes. 
 
-Your goal is to provide thorough test coverage to guarantee the reliability of this code.
+Specify the expected outcomes for different scenarios to provide a clear understanding of the test cases. 
 
-Only answer me with the code and nothing else.
+Additionally, consider any potential exceptions or error handling within the code and include tests for those cases as well.
+
+Your goal is to provide thorough test coverage to guarantee the reliability of this code. 
+
+Provide the unit test code as the answer, without any additional information.
 
 =====================
 
-Here's an example of a answer for python language
+Here's an example of an answer for Python language:
 
 Example answer: 
 import unittest
@@ -130,8 +134,9 @@ from sample_module import Calculator, square, greet...
 
 CODE: ``` {{code}} ```
 
-ANSWER: 
+ANSWER:
 """
+
 
     prompt = ChatPromptTemplate.from_template(template=prompt_text)
 

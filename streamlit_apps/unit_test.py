@@ -65,18 +65,20 @@ def delete_folder(folder_path):
         st.write(f"Error deleting folder: {e}")
 
 
-@st.cache_data
+
 def convert_to_api_url(github_repo_url):
-    # Extract the username/organization and repository name
-    username_repo = github_repo_url.split('github.com/')[1].split('/')
 
-    # Extract the folder path
-    folder_path = github_repo_url.split(f'github.com/{username_repo[0]}/{username_repo[1]}/')[1]
+    if github_repo_url.startswith("https://github.com"):
+        # Extract the username/organization and repository name
+        username_repo = github_repo_url.split('github.com/')[1].split('/')
 
-    # Construct the GitHub API URL
-    api_url = f"https://api.github.com/repos/{username_repo[0]}/{username_repo[1]}/contents"
-    
-    return api_url
+        # Extract the folder path
+        folder_path = github_repo_url.split(f'github.com/{username_repo[0]}/{username_repo[1]}/')[1]
+
+        # Construct the GitHub API URL
+        api_url = f"https://api.github.com/repos/{username_repo[0]}/{username_repo[1]}/contents"
+        
+        return api_url
 
 
 @st.cache_data
@@ -161,10 +163,13 @@ def split_docs(docs):
 def generate_unit_tests(document, openai_data):
 
     model = ChatOpenAI(openai_api_key=openai_data["openai_api_key"], model=openai_data["openai_model"], temperature=openai_data["openai_temperature"])
-    prompt = unit_tests_generator()
+
+    language = document.metadata.get("language", "")
+
+    prompt = unit_tests_generator(language)
     chain = prompt | model | StrOutputParser()
 
-    answer = chain.invoke({"code":document.page_content, "language":document.metadata.get("language", "")})    
+    answer = chain.invoke({"code":document.page_content})    
 
     return answer
 
@@ -178,7 +183,7 @@ def main():
 
     st.title(":test_tube: Unit Test Generator")
 
-    st.caption(body="Either Upload Code Files or Add Github Repo URL. Uploaded file will be used if any and not the URL")
+    st.caption(body="Upload Code File, Enter Code Block or Enter Github URL")
 
 
     col1, col2 = st.columns(2)
@@ -187,8 +192,8 @@ def main():
         uploaded_files = st.file_uploader('Upload files', accept_multiple_files=True)
 
     with col2:
-        github_url = st.text_area("Enter Public :globe_with_meridians: GitHub Repository URL:", placeholder="github repo url", height=50)
-    if github_url:
+        github_url = st.text_area("Enter Code Text or Public :globe_with_meridians: GitHub Repository URL:", placeholder="github repo url", height=50)
+    if github_url.startswith("https://github.com"):
         api_url = convert_to_api_url(github_url)
         st.success(f"API URL: {api_url}")
           
@@ -202,9 +207,14 @@ def main():
         if uploaded_files:
             all_documents = upload_files(uploaded_files)      
         elif github_url:
-            api_url = convert_to_api_url(github_url)
-            all_documents = fetch_and_save_files(api_url)
 
+            if github_url.startswith("https://github.com"):
+                api_url = convert_to_api_url(github_url)
+                all_documents = fetch_and_save_files(api_url)
+            else:                
+                all_documents = [Document(page_content=github_url, metadata={"language":"", "file_name":"Code Block", "file_extension":".txt"})]
+        
+        splitted_docs.extend(split_docs(all_documents))
 
         st.warning(f"Total {len(all_documents)} document(s) have been split into {len(splitted_docs)} chunk(s) for API calls.Are you sure you want to continue?")
 
@@ -216,12 +226,14 @@ def main():
              
     if st.session_state.continue_generation:
 
-        if github_url:
-            api_url = convert_to_api_url(github_url)
-            all_documents = fetch_and_save_files(api_url)
-    
-        elif not github_url and uploaded_files:
+        if uploaded_files:
             all_documents = upload_files(uploaded_files)      
+        elif github_url:
+            if github_url.startswith("https://github.com"):
+                api_url = convert_to_api_url(github_url)
+                all_documents = fetch_and_save_files(api_url)
+            else:                
+                all_documents = [Document(page_content=github_url, metadata={"language":"", "file_name":"Code Block", "file_extension":".txt"})]
 
         splitted_docs.extend(split_docs(all_documents))
 
