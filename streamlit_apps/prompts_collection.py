@@ -108,7 +108,7 @@ SUMMARY: """
 def unit_tests_generator():
 
     prompt_text = f"""
-Create comprehensive unit tests for the provided Python code block to verify that it functions correctly under various scenarios. 
+Create comprehensive unit tests for the provided {{language}} code block to verify that it functions correctly under various scenarios. 
 
 Ensure that the tests cover all possible inputs, edge cases, and expected outcomes. 
 
@@ -118,13 +118,17 @@ Your goal is to provide thorough test coverage to guarantee the reliability of t
 
 Only answer me with the code and nothing else.
 
-Here's an example of a answer,
+=====================
+
+Here's an example of a answer for python language
 
 Example answer: 
 import unittest
 from sample_module import Calculator, square, greet...
 
-Code: ``` {{text}} ```
+======================
+
+CODE: ``` {{code}} ```
 
 ANSWER: 
 """

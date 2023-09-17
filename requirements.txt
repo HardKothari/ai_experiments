@@ -6,3 +6,4 @@ youtube-transcript-api==0.6.1
 openai==0.27.8
 tiktoken==0.4.0
 bs4
+unstructured[all-docs]==0.10.15

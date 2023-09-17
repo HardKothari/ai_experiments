@@ -73,3 +73,5 @@ etc/jupyter/nbconfig/notebook.d/pydeck.json
 streamlit_apps/st_functions.py
 streamlit_apps/zzzz-unit_tests_generator.py
 streamlit_apps/unit-tests-generator.py
+streamlit_apps/ut1.py
+streamlit_apps/ut2.py
