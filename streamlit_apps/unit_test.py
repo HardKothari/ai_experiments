@@ -197,12 +197,17 @@ def main():
         api_url = convert_to_api_url(github_url)
         st.success(f"API URL: {api_url}")
           
-    
+    # Check if API Key and URL are provided
+    if not openai_api_key:
+        st.warning("Please enter the OpenAI API Key and YouTube URL before proceeding.")
+        return    
+
+
     generate = st.button('Generate Unit Tests') 
 
     splitted_docs = []
 
-    if generate:
+    if generate and openai_api_key:
     
         if uploaded_files:
             all_documents = upload_files(uploaded_files)      
