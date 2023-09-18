@@ -22,7 +22,7 @@ code_folder = 'streamlit_apps/code_files'
 
 openai_api_key = st.sidebar.text_input("Enter your OpenAI API Key (mandatory)", type="password")
 st.sidebar.divider()
-openai_model = st.sidebar.selectbox("Model", options=["gpt-3.5-turbo","gpt-3.5-turbo-16k", "gpt-4.0"])
+openai_model = st.sidebar.selectbox("Model", options=["gpt-3.5-turbo","gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"])
 openai_temperature = st.sidebar.slider(label="Temperature", min_value=0.0, max_value=1.0, step=0.05, value=1.0)
 st.sidebar.divider()
 
